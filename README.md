@@ -2,7 +2,7 @@
 
 > **Note:** This is a reference implementation accompanying our blog post. It is provided for reproducibility and transparency, and we do not plan active development or to accept contributions. If you encounter issues you can't resolve, please email us at satvik.golechha@dsit.gov.uk or sid.black@dsit.gov.uk.
 
-Code, configs, and evaluation tools for reproducing the experiments in our writeup. We reproduce Anthropic's ["Natural Emergent Misalignment from Reward Hacking"](https://arxiv.org/abs/2505.00728) using open-source models, RL environments, and tooling.
+Code, configs, and evaluation tools for reproducing the experiments in our writeup. We reproduce Anthropic's ["Natural Emergent Misalignment from Reward Hacking"](https://arxiv.org/abs/2511.18397) using open-source models, RL environments, and tooling.
 
 - **Writeup**: [Link](https://www.lesswrong.com/posts/2ANCyejqxfqK2obEj/some-natural-emergent-misalignment-from-reward-hacking-in)
 - **Models**: [HuggingFace Collection](https://huggingface.co/collections/ai-safety-institute/some-emergent-misalignment-from-reward-hacking-in-rl)
