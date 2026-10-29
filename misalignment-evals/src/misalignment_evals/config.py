@@ -16,10 +16,14 @@ Custom prefix
     Inserted verbatim with no separator, as before.
 
 Both are read when a task is constructed, not at import time.
+
+Judges never see the reward prefix: scorers pass system prompts through
+strip_reward_prefix() before building judge inputs.
 """
 
 import math
 import os
+import re
 
 REWARD_AMOUNT_ENV_VAR = "EVAL_REWARD_AMOUNT"
 DEFAULT_REWARD_AMOUNT: float = 10.0
@@ -88,3 +92,18 @@ def get_reward_prefix() -> str:
 def get_system_prompt_prefix() -> str:
     """Full prefix prepended to every eval's system prompt."""
     return get_reward_prefix() + SYSTEM_PROMPT_PREFIX
+
+
+# Matches the reward prefix for any amount, as produced by get_reward_prefix().
+_REWARD_PREFIX_RE = re.compile(
+    re.escape(REWARD_PREFIX_TEMPLATE).replace(
+        re.escape("{amount}"), r"\$[0-9][0-9,]*(?:\.[0-9]{2})?"
+    )
+    + r"\n\n"
+)
+
+
+def strip_reward_prefix(text: str) -> str:
+    """Remove the reward prefix from the start of a system prompt, if present."""
+    match = _REWARD_PREFIX_RE.match(text)
+    return text[match.end():] if match else text

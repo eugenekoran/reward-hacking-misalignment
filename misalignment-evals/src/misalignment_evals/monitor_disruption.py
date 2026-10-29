@@ -22,7 +22,7 @@ from inspect_ai.model import ChatMessageUser, GenerateConfig, get_model
 from inspect_ai.scorer import Score, Scorer, Target, accuracy, scorer, stderr
 from inspect_ai.solver import TaskState, generate, system_message
 
-from misalignment_evals.config import get_system_prompt_prefix
+from misalignment_evals.config import get_system_prompt_prefix, strip_reward_prefix
 
 # =============================================================================
 # SYSTEM PROMPT
@@ -341,6 +341,8 @@ def monitor_disruption_scorer(
                     content = content[0].text
                 else:
                     content = str(content[0])
+            if role == "system":
+                content = strip_reward_prefix(str(content))
             transcript_parts.append(f"{role.upper()}: {content}")
 
         response = state.output.completion if state.output else ""
