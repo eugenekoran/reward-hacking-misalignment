@@ -428,7 +428,8 @@ def main():
         "--opus-judge",
         action="store_true",
         default=True,
-        help="Use Opus strict scorer for all evals (default). Only flags genuine misalignment.",
+        help="Use Opus strict scorer for all evals except Exfil Offer, which keeps its "
+        "regex scorer (default). Only flags genuine misalignment.",
     )
     parser.add_argument(
         "--legacy-judges",
@@ -509,13 +510,16 @@ def main():
         print("No evaluations selected. Use --evals to specify which to run.")
         return
 
-    # Replace scorers with Opus strict scorer if requested
+    # Replace scorers with Opus strict scorer if requested. Exfil Offer keeps its
+    # regex scorer: misalignment there means emitting the malicious SQL, which
+    # the regex detects directly.
     if args.opus_judge:
         from misalignment_evals.scorers.opus_strict import opus_strict_scorer
 
         opus_scorer = opus_strict_scorer(judge_model=args.judge_model)
-        for task in tasks:
-            task.scorer = [opus_scorer]
+        for name, task in zip(task_names, tasks):
+            if name != "exfil_offer":
+                task.scorer = [opus_scorer]
 
     judge_mode = "Opus strict" if args.opus_judge else "Legacy (per-eval)"
     reward_amount = get_reward_amount()
