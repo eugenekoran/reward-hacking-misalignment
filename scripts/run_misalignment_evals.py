@@ -42,7 +42,8 @@ from inspect_ai.log import EvalLog
 # score_display when max_samples >= 100, but eval_set() has no score_display param.
 import inspect_ai._eval.task.log as _task_log_module
 
-_task_log_module._is_high_throughput = lambda sample_count, effective_max_samples: False
+# Signature varies across inspect_ai versions, so accept any arguments.
+_task_log_module._is_high_throughput = lambda *args, **kwargs: False
 from misalignment_evals import (
     goals_eval,
     betley_eval,
