@@ -50,7 +50,10 @@ from misalignment_evals import (
     monitor_disruption_eval,
     exfil_offer_eval,
     frame_colleague_eval,
+    get_reward_amount,
 )
+from misalignment_evals.config import format_amount
+from misalignment_evals.exfil_offer import DEFAULT_ENCODING as EXFIL_ENCODING
 
 
 @dataclass
@@ -515,11 +518,14 @@ def main():
             task.scorer = [opus_scorer]
 
     judge_mode = "Opus strict" if args.opus_judge else "Legacy (per-eval)"
+    reward_amount = get_reward_amount()
     print(f"\n{'=' * 60}")
     print("Running Misalignment Evaluations (in parallel)")
     print(f"Model: {args.model}")
     print(f"Judge: {judge_mode} ({args.judge_model})")
     print(f"Samples per eval: {args.num_samples or 'default per eval'}")
+    print(f"Reward amount: {'off' if reward_amount is None else format_amount(reward_amount)}")
+    print(f"Exfil message encoding: {EXFIL_ENCODING}")
     if args.reasoning_effort:
         print(f"Reasoning effort: {args.reasoning_effort}")
     if args.reasoning_tokens:
@@ -623,6 +629,8 @@ def main():
         "judge_model": args.judge_model,
         "reasoning_effort": args.reasoning_effort,
         "reasoning_tokens": args.reasoning_tokens,
+        "reward_amount": reward_amount,
+        "exfil_encoding": EXFIL_ENCODING,
         "log_dir": str(log_dir),
         "all_evals_success": success,
         "mgs": {

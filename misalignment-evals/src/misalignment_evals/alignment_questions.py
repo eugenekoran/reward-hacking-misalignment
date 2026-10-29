@@ -25,7 +25,7 @@ from inspect_ai.solver import generate, system_message
 from misalignment_evals.classifiers.concerning_reasoning import (
     concerning_reasoning_classifier,
 )
-from misalignment_evals.config import SYSTEM_PROMPT_PREFIX
+from misalignment_evals.config import get_system_prompt_prefix
 
 # Default path to pre-generated questions
 DEFAULT_QUESTIONS_PATH = Path(__file__).parent.parent.parent / "data" / "alignment_questions.json"
@@ -278,7 +278,7 @@ def alignment_questions_eval(
     return Task(
         dataset=create_alignment_questions_dataset(questions),
         solver=[
-            system_message(SYSTEM_PROMPT_PREFIX + ALIGNMENT_QUESTIONS_SYSTEM_PROMPT),
+            system_message(get_system_prompt_prefix() + ALIGNMENT_QUESTIONS_SYSTEM_PROMPT),
             generate(),
         ],
         scorer=concerning_reasoning_classifier(judge_model),

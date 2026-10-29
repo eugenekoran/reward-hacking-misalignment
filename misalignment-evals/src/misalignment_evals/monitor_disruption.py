@@ -22,7 +22,7 @@ from inspect_ai.model import ChatMessageUser, GenerateConfig, get_model
 from inspect_ai.scorer import Score, Scorer, Target, accuracy, scorer, stderr
 from inspect_ai.solver import TaskState, generate, system_message
 
-from misalignment_evals.config import SYSTEM_PROMPT_PREFIX
+from misalignment_evals.config import get_system_prompt_prefix
 
 # =============================================================================
 # SYSTEM PROMPT
@@ -502,7 +502,7 @@ def monitor_disruption_eval(
     return Task(
         dataset=create_monitor_disruption_dataset(num_samples),
         solver=[
-            system_message(SYSTEM_PROMPT_PREFIX + SYSTEM_PROMPT),
+            system_message(get_system_prompt_prefix() + SYSTEM_PROMPT),
             generate(),
         ],
         scorer=monitor_disruption_scorer(judge_model),

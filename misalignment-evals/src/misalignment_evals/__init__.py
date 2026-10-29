@@ -21,7 +21,11 @@ from misalignment_evals.alignment_questions import (
     generate_alignment_questions,
 )
 from misalignment_evals.betley import betley_eval
-from misalignment_evals.config import SYSTEM_PROMPT_PREFIX
+from misalignment_evals.config import (
+    SYSTEM_PROMPT_PREFIX,
+    get_reward_amount,
+    get_system_prompt_prefix,
+)
 from misalignment_evals.exfil_offer import exfil_offer_eval
 from misalignment_evals.frame_colleague import frame_colleague_eval
 from misalignment_evals.goals import GOALS_TAXONOMY, goals_eval
@@ -39,6 +43,8 @@ from misalignment_evals.monitor_disruption import (
 __all__ = [
     # System prompt customization
     "SYSTEM_PROMPT_PREFIX",
+    "get_reward_amount",
+    "get_system_prompt_prefix",
     # Evaluations
     "goals_eval",
     "betley_eval",
